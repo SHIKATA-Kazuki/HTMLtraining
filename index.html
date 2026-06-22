@@ -185,6 +185,19 @@ main {
   font-size: 13px;
   color: var(--muted);
   text-align: center;
+  min-height: 20px;
+  filter: blur(5px);
+  opacity: 0.3;
+  transition: filter 0.15s, opacity 0.15s;
+  user-select: none;
+}
+.card-sub.revealed {
+  filter: none;
+  opacity: 1;
+}
+.card-sub:empty {
+  filter: none;
+  opacity: 0;
 }
 
 /* shake on wrong */
@@ -251,6 +264,13 @@ main {
 }
 
 /* typing char display */
+.char-display-wrap {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
 .char-display {
   width: 100%;
   display: flex;
@@ -259,6 +279,43 @@ main {
   flex-wrap: wrap;
   min-height: 36px;
   align-items: center;
+  /* hidden by default */
+  filter: blur(6px);
+  opacity: 0.35;
+  transition: filter 0.15s, opacity 0.15s;
+  user-select: none;
+}
+.char-display.revealed {
+  filter: none;
+  opacity: 1;
+}
+.reveal-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  color: var(--muted);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 99px;
+  padding: 3px 10px;
+  font-family: 'JetBrains Mono', monospace;
+  transition: color 0.15s, border-color 0.15s, background 0.15s;
+  pointer-events: none;
+}
+.reveal-badge.active {
+  color: var(--blue);
+  border-color: var(--blue);
+  background: rgba(67,97,238,0.07);
+}
+.reveal-badge .key {
+  display: inline-block;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 1px 6px;
+  font-size: 10px;
+  line-height: 1.4;
 }
 .ch {
   font-family: 'JetBrains Mono', monospace;
@@ -398,11 +455,13 @@ main {
 
 <!-- Category pills -->
 <div class="cat-row" id="catRow">
-  <button class="cat-pill active" data-cat="css-prop">CSSプロパティ</button>
-  <button class="cat-pill" data-cat="css-val">CSS値・単位</button>
+  <button class="cat-pill active" data-cat="easy">まずはここから</button>
+  <button class="cat-pill" data-cat="position">配置に関する単語</button>
+  <button class="cat-pill" data-cat="css-prop">CSSプロパティ</button>
   <button class="cat-pill" data-cat="html">HTMLタグ</button>
   <button class="cat-pill" data-cat="selector">セレクタ</button>
-  <button class="cat-pill" data-cat="mix">ミックス 🎲</button>
+  <button class="cat-pill" data-cat="css-val">CSS値・単位</button>
+  <!-- <button class="cat-pill" data-cat="mix">ミックス 🎲</button> -->
 </div>
 
 <main>
@@ -423,7 +482,17 @@ main {
   </div>
 
   <!-- Char display -->
-  <div class="char-display" id="charDisplay"></div>
+  <div class="char-display-wrap">
+    <div class="char-display" id="charDisplay"></div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;">
+      <div class="reveal-badge" id="hintBadge">
+        <span class="key">Ctrl</span> でヒント
+      </div>
+      <div class="reveal-badge" id="revealBadge">
+        <span class="key">Ctrl</span><span style="color:var(--muted);font-size:10px">+</span><span class="key">Shift</span> で答え
+      </div>
+    </div>
+  </div>
 
   <!-- Input -->
   <div class="input-block">
@@ -444,7 +513,7 @@ main {
 
   <!-- Actions -->
   <div class="action-row">
-    <button class="action-btn" id="hintBtn">💡 ヒント表示</button>
+    <button class="action-btn" id="hintBtn">💡 ヒント <small style="font-size:10px;opacity:.7">Shift</small></button>
     <button class="action-btn" id="skipBtn">スキップ ⏭</button>
     <button class="action-btn primary" id="nextSetBtn">次のセット →</button>
   </div>
@@ -468,12 +537,44 @@ main {
 <script>
 // ── Word bank ─────────────────────────────────────────────────────────────
 const BANKS = {
-  'css-prop': {
+  'easy': {
+    label: 'まずはここから',
+    items: [
+      { ja: '背景',               en: 'background',   hint: 'b○○○gr○○○d' },
+      { ja: 'フォント',           en: 'font',         hint: 'f○○○' },
+      { ja: '大きさ、サイズ',      　　　 en: 'size',           hint: 's○○○' },
+      { ja: '整列させる',       　en: 'align',         hint: 'a(～へ,を表す接頭辞) + lin(線)' },
+      { ja: '行',            　 　en: 'line',         hint: 'l○○○' },
+      { ja: '外余白',             en: 'margin',              hint: 'mar○○○.のりしろ、と訳されることも.' },
+      { ja: '内余白',             en: 'padding',             hint: 'pad○○○○○。アメフトの肩パッド、は相手との体当たりを衝撃をモロにもらわないように"余白"を作るための道具' },
+      { ja: '配置',             en: 'position',            hint: 'pos○○○○○○(ex. サッカーのポ~~~)' },
+      { ja: '文字',             en: 'text',     hint: 't○○○.「教科書」の意味も' },
+      { ja: '順',             en: 'index',             hint: 'i○○○○、「辞書引き」の意味も' },
+      { ja: '幅',                   en: 'width',               hint: '幅が広いことはwide。程度を表す名刺語尾はth' },
+      { ja: '長さ',                   en: 'length',               hint: '長いことはlong。程度を表す名刺語尾はth' },
+      { ja: '高さ',                 en: 'height',              hint: 'hei○○○○' },
+      { ja: '色',               en: 'color',               hint: 'col○○' },
+      { ja: '線、境界',                 en: 'border',              hint: 'bor○○○' },
+      { ja: '透明度',               en: 'opacity',             hint: 'opa○○○○' },
+      { ja: '要素',               en: 'item',             hint: 'i○○○' },
+    ]
+  },
+  'position': {
+    label: '配置に関する単語',
+    items: [
+      { ja: '位置',              en: 'position',            hint: 'pos○○○○○○(ex. サッカーのポ~~~)' },
+      { ja: '中央',              en: 'center'  ,            hint: 'c○○t○○' },
+      { ja: '右',                en: 'right'   ,            hint: 'r○○○○'  },
+      { ja: '左',                en: 'left'    ,            hint: 'l○○○'   },
+      { ja: 'フレックスボックス',           en: 'flexbox',         hint: 'f○○○b○○。HTMLの基本は要素を"箱"として捉えること.' },
+    ]
+  },
+  'css-prop':{
     label: 'CSSプロパティ',
     items: [
       { ja: '背景色',               en: 'background-color',   hint: 'background-○○○○○' },
       { ja: '角丸',                 en: 'border-radius',       hint: 'border-○○○○○○' },
-      { ja: '影',                   en: 'box-shadow',          hint: 'box-○○○○○○' },
+    //   { ja: '影',                   en: 'box-shadow',          hint: 'box-○○○○○○' },
       { ja: '表示方法',             en: 'display',             hint: 'dis○○○○○' },
       { ja: '並び方向（Flex）',     en: 'flex-direction',      hint: 'flex-○○○○○○○○○' },
       { ja: 'フォント名',           en: 'font-family',         hint: 'font-○○○○○○' },
@@ -486,16 +587,74 @@ const BANKS = {
       { ja: '内余白',               en: 'padding',             hint: 'pad○○○○○' },
       { ja: '配置方法',             en: 'position',            hint: 'pos○○○○○○' },
       { ja: '文字装飾',             en: 'text-decoration',     hint: 'text-○○○○○○○○○○' },
-      { ja: 'アニメーション遷移',   en: 'transition',          hint: 'trans○○○○○○' },
-      { ja: '変形',                 en: 'transform',           hint: 'trans○○○○○' },
+    //   { ja: 'アニメーション遷移',   en: 'transition',          hint: 'trans○○○○○○' },
+    //   { ja: '変形',                 en: 'transform',           hint: 'trans○○○○○' },
       { ja: 'はみ出し処理',         en: 'overflow',            hint: 'over○○○○' },
-      { ja: '重なり順',             en: 'z-index',             hint: 'z-○○○○○' },
+    //   { ja: '重なり順',             en: 'z-index',             hint: 'z-○○○○○' },
       { ja: '幅',                   en: 'width',               hint: 'wi○○○' },
       { ja: '高さ',                 en: 'height',              hint: 'hei○○○○' },
-      { ja: '文字色',               en: 'color',               hint: 'col○○' },
-      { ja: '枠線',                 en: 'border',              hint: 'bor○○○' },
+      { ja: '文字色を指定するときのプロパティは？',  en: 'color', hint: 'col○○' },
+      { ja: '枠線',                 en: 'border',              hint: '境界線、と言い換える。bor○○○' },
       { ja: '透明度',               en: 'opacity',             hint: 'opa○○○○' },
-      { ja: 'カーソル形状',         en: 'cursor',              hint: 'cur○○○○' },
+    //   { ja: 'カーソル形状',         en: 'cursor',              hint: 'cur○○○○' },
+    ]
+  },
+  'selector': {
+    label: 'セレクタ構文',
+    items: [
+      { ja: 'idを指定するとき',               en: '#',   hint: 'shiftキーを使わないといけないね' },
+      { ja: 'クラスを指定するとき',                 en: '.',       hint: 'ピリオドを使うだけ' },
+      { ja: '例えばbodyタグをdisplay:flex;のように指定するとき',   en: 'body{display:felx;}', hint: '改行・スペースなしで全て書いてね' },
+    //   { ja: 'クラス選択',           en: '.class',              hint: '.cl○○○' },
+    //   { ja: 'ID選択',               en: '#id',                 hint: '#i○' },
+      { ja: 'ホバー時',             en: ':hover',              hint: ':ho○○○' },
+      { ja: 'フォーカス時',         en: ':focus',              hint: ':fo○○○' },
+      { ja: '最初の子要素',         en: ':first-child',        hint: ':first-○○○○○' },
+      { ja: '最後の子要素',         en: ':last-child',         hint: ':last-○○○○○' },
+    //   { ja: '直下の子',             en: '',             hint: '○' },
+    //   { ja: '直後の兄弟',           en: '+',                   hint: '○' },
+    //   { ja: '以降の兄弟',           en: '~',                   hint: '○' },
+    //   { ja: '属性選択',             en: '[attr]',              hint: '[at○○]' },
+    //   { ja: 'ルート要素',           en: ':root',               hint: ':ro○○' },
+      { ja: '疑似要素・前',         en: '::before',            hint: '::be○○○○' },
+      { ja: '疑似要素・後',         en: '::after',             hint: '::af○○○' },
+    //   { ja: '否定',                 en: ':not()',              hint: ':no○()' },
+    //   { ja: 'N番目の子',            en: ':nth-child()',        hint: ':nth-○○○○○()' },
+    //   { ja: 'メディアクエリ',       en: '@media',              hint: '@me○○○' },
+    //   { ja: 'キーフレーム定義',     en: '@keyframes',          hint: '@key○○○○○○' },
+    //   { ja: '複数まとめて選択',     en: ':is()',               hint: ':i○()' },
+    //   { ja: 'CSS変数定義',          en: '@layer',              hint: '@la○○○' },
+    //   { ja: '全称選択',             en: '*',                   hint: '○' },
+    ]
+  },
+  'html': {
+    label: 'HTMLタグ※<>は省略する',
+    items: [
+      { ja: 'HTML宣言',             en: '!DOCTYPE html', hint: '<!DOC○○○○ html>' },
+      { ja: 'ページ全体',           en: 'html',          hint: '<ht○○>' },
+      { ja: 'メタ情報エリア',       en: 'head',          hint: '<he○○>' },
+      { ja: '文字コード指定',       en: 'meta charset',  hint: '<meta ch○○○○○>' },
+      { ja: 'CSS読み込み',          en: 'link',          hint: '<li○○>' },
+      { ja: 'ページ本文',           en: 'body',          hint: '<bo○○>' },
+      { ja: 'ヘッダー',             en: 'header',        hint: '<hea○○○>' },
+      { ja: 'ナビゲーション',       en: 'nav',           hint: '<na○>' },
+      { ja: 'メインコンテンツ',     en: 'main',          hint: '<ma○○>' },
+      { ja: 'セクション',           en: 'section',       hint: '<sec○○○○>' },
+      { ja: '記事',                 en: 'article',       hint: '<art○○○○>' },
+      { ja: 'フッター',             en: 'footer',        hint: '<foo○○○>' },
+      { ja: 'ボタン',               en: 'button',        hint: '<but○○○>' },
+      { ja: '入力欄',               en: 'input',         hint: '<in○○○>' },
+      { ja: 'ラベル',               en: 'label',         hint: '<lab○○>' },
+      { ja: '画像',                 en: 'img',           hint: '<im○>' },
+      { ja: '見出し1',              en: 'h1',            hint: '<h○>' },
+      { ja: '段落',                 en: 'p',             hint: '<○>' },
+      { ja: '番号なしリスト',       en: 'ul',            hint: '<u○>' },
+      { ja: 'リスト項目',           en: 'li',            hint: '<l○>' },
+      { ja: 'リンク',               en: 'a',             hint: '<○>' },
+      { ja: '汎用ブロック',         en: 'div',           hint: '<di○>' },
+      { ja: '汎用インライン',       en: 'span',          hint: '<sp○○>' },
+      { ja: 'テーブル',             en: 'table',         hint: '<tab○○>' },
+      { ja: 'フォーム',             en: 'form',          hint: '<fo○○>' },
     ]
   },
   'css-val': {
@@ -508,13 +667,13 @@ const BANKS = {
       { ja: '親から引き継ぐ',       en: 'inherit',             hint: 'in○○○○○' },
       { ja: '絶対配置',             en: 'absolute',            hint: 'abs○○○○○○' },
       { ja: '相対配置',             en: 'relative',            hint: 'rel○○○○○○' },
-      { ja: '半透明の黒',           en: 'rgba(0,0,0,0.5)',     hint: 'rgba(○,○,○,○.○)' },
-      { ja: '計算式',               en: 'calc()',              hint: 'cal○()' },
-      { ja: 'CSS変数参照',          en: 'var()',               hint: 'va○()' },
-      { ja: '線形グラデーション',   en: 'linear-gradient()',   hint: 'linear-○○○○○○○○○()' },
+    //   { ja: '半透明の黒',           en: 'rgba(0,0,0,0.5)',     hint: 'rgba(○,○,○,○.○)' },
+    //   { ja: '計算式',               en: 'calc()',              hint: 'cal○()' },
+    //   { ja: 'CSS変数参照',          en: 'var()',               hint: 'va○()' },
+    //   { ja: '線形グラデーション',   en: 'linear-gradient()',   hint: 'linear-○○○○○○○○○()' },
       { ja: 'なし',                 en: 'none',                hint: 'no○○' },
       { ja: '自動',                 en: 'auto',                hint: 'au○○' },
-      { ja: '優先度最大',           en: '!important',          hint: '!im○○○○○○○' },
+    //   { ja: '優先度最大',           en: '!important',          hint: '!im○○○○○○○' },
       { ja: 'コンテンツ幅に合わせる', en: 'max-content',       hint: 'max-○○○○○○○' },
       { ja: 'ビューポート幅',       en: 'vw',                  hint: 'v○' },
       { ja: 'ビューポート高さ',     en: 'vh',                  hint: 'v○' },
@@ -523,65 +682,10 @@ const BANKS = {
       { ja: 'グリッド均等割',       en: 'fr',                  hint: '○○' },
     ]
   },
-  'html': {
-    label: 'HTMLタグ',
-    items: [
-      { ja: 'HTML宣言',             en: '<!DOCTYPE html>',      hint: '<!DOC○○○○ html>' },
-      { ja: 'ページ全体',           en: '<html>',              hint: '<ht○○>' },
-      { ja: 'メタ情報エリア',       en: '<head>',              hint: '<he○○>' },
-      { ja: '文字コード指定',       en: '<meta charset>',      hint: '<meta ch○○○○○>' },
-      { ja: 'CSS読み込み',          en: '<link>',              hint: '<li○○>' },
-      { ja: 'ページ本文',           en: '<body>',              hint: '<bo○○>' },
-      { ja: 'ヘッダー',             en: '<header>',            hint: '<hea○○○>' },
-      { ja: 'ナビゲーション',       en: '<nav>',               hint: '<na○>' },
-      { ja: 'メインコンテンツ',     en: '<main>',              hint: '<ma○○>' },
-      { ja: 'セクション',           en: '<section>',           hint: '<sec○○○○>' },
-      { ja: '記事',                 en: '<article>',           hint: '<art○○○○>' },
-      { ja: 'フッター',             en: '<footer>',            hint: '<foo○○○>' },
-      { ja: 'ボタン',               en: '<button>',            hint: '<but○○○>' },
-      { ja: '入力欄',               en: '<input>',             hint: '<in○○○>' },
-      { ja: 'ラベル',               en: '<label>',             hint: '<lab○○>' },
-      { ja: '画像',                 en: '<img>',               hint: '<im○>' },
-      { ja: '見出し1',              en: '<h1>',                hint: '<h○>' },
-      { ja: '段落',                 en: '<p>',                 hint: '<○>' },
-      { ja: '番号なしリスト',       en: '<ul>',                hint: '<u○>' },
-      { ja: 'リスト項目',           en: '<li>',                hint: '<l○>' },
-      { ja: 'リンク',               en: '<a>',                 hint: '<○>' },
-      { ja: '汎用ブロック',         en: '<div>',               hint: '<di○>' },
-      { ja: '汎用インライン',       en: '<span>',              hint: '<sp○○>' },
-      { ja: 'テーブル',             en: '<table>',             hint: '<tab○○>' },
-      { ja: 'フォーム',             en: '<form>',              hint: '<fo○○>' },
-    ]
-  },
-  'selector': {
-    label: 'セレクタ構文',
-    items: [
-      { ja: 'クラス選択',           en: '.class',              hint: '.cl○○○' },
-      { ja: 'ID選択',               en: '#id',                 hint: '#i○' },
-      { ja: 'ホバー時',             en: ':hover',              hint: ':ho○○○' },
-      { ja: 'フォーカス時',         en: ':focus',              hint: ':fo○○○' },
-      { ja: '最初の子要素',         en: ':first-child',        hint: ':first-○○○○○' },
-      { ja: '最後の子要素',         en: ':last-child',         hint: ':last-○○○○○' },
-      { ja: '直下の子',             en: '>',                   hint: '○' },
-      { ja: '直後の兄弟',           en: '+',                   hint: '○' },
-      { ja: '以降の兄弟',           en: '~',                   hint: '○' },
-      { ja: '属性選択',             en: '[attr]',              hint: '[at○○]' },
-      { ja: 'ルート要素',           en: ':root',               hint: ':ro○○' },
-      { ja: '疑似要素・前',         en: '::before',            hint: '::be○○○○' },
-      { ja: '疑似要素・後',         en: '::after',             hint: '::af○○○' },
-      { ja: '否定',                 en: ':not()',              hint: ':no○()' },
-      { ja: 'N番目の子',            en: ':nth-child()',        hint: ':nth-○○○○○()' },
-      { ja: 'メディアクエリ',       en: '@media',              hint: '@me○○○' },
-      { ja: 'キーフレーム定義',     en: '@keyframes',          hint: '@key○○○○○○' },
-      { ja: '複数まとめて選択',     en: ':is()',               hint: ':i○()' },
-      { ja: 'CSS変数定義',          en: '@layer',              hint: '@la○○○' },
-      { ja: '全称選択',             en: '*',                   hint: '○' },
-    ]
-  }
 };
 
 // ── State ─────────────────────────────────────────────────────────────────
-let cat = 'css-prop';
+let cat = 'easy';
 let queue = [];
 let idx = 0;
 let startTime = null;
@@ -610,6 +714,7 @@ const sAcc        = document.getElementById('sAcc');
 const sTime       = document.getElementById('sTime');
 const toast       = document.getElementById('toast');
 const complete    = document.getElementById('complete');
+const revealBadge = document.getElementById('revealBadge');
 
 // ── Category switch ───────────────────────────────────────────────────────
 document.getElementById('catRow').addEventListener('click', e => {
@@ -659,6 +764,8 @@ function showCard(initial = false) {
   cardHint.textContent = item.ja;
   cardHint.className = 'card-hint' + (item.ja.length > 8 ? ' small' : '');
   cardSub.textContent = '';
+  cardSub.classList.remove('revealed');
+  hideHint();
   hintShown = false;
 
   renderCharDisplay('');
@@ -714,8 +821,32 @@ answer.addEventListener('input', () => {
 });
 
 answer.addEventListener('keydown', e => {
-  if (e.key === 'Enter') { e.preventDefault(); checkAnswer(); }
+  if (e.key === 'Enter') { e.preventDefault(); checkAnswer(); return; }
+  if (e.key === 'Control' && !e.shiftKey) { showHint(); updateHintBadge(true); }
+  if (e.key === 'Shift' && e.ctrlKey)     { revealChars(true); }
+  if (e.key === 'Control' && e.shiftKey)  { revealChars(true); }
 });
+answer.addEventListener('keyup', e => {
+  if (e.key === 'Shift')   { revealChars(false); }
+  if (e.key === 'Control') { revealChars(false); hideHint(); updateHintBadge(false); }
+});
+
+function revealChars(show) {
+  charDisplay.classList.toggle('revealed', show);
+  const badge = document.getElementById('revealBadge');
+  badge.classList.toggle('active', show);
+  badge.innerHTML = show
+    ? '<span class="key">Ctrl</span><span style="color:var(--muted);font-size:10px">+</span><span class="key">Shift</span> 表示中…'
+    : '<span class="key">Ctrl</span><span style="color:var(--muted);font-size:10px">+</span><span class="key">Shift</span> で答え';
+}
+
+function updateHintBadge(show) {
+  const badge = document.getElementById('hintBadge');
+  badge.classList.toggle('active', show);
+  badge.innerHTML = show
+    ? '<span class="key">Ctrl</span> 表示中…'
+    : '<span class="key">Ctrl</span> でヒント';
+}
 
 // ── Check answer ──────────────────────────────────────────────────────────
 function checkAnswer() {
@@ -782,12 +913,29 @@ function updateProgress() {
   progLabel.textContent = idx + ' / ' + queue.length;
 }
 
-// ── Hint ──────────────────────────────────────────────────────────────────
-document.getElementById('hintBtn').addEventListener('click', () => {
+// ── Hint (hold to reveal) ─────────────────────────────────────────────────
+const hintBtn = document.getElementById('hintBtn');
+
+function showHint() {
   if (idx >= queue.length) return;
-  hintShown = true;
-  cardSub.textContent = '💡 ' + queue[idx].hint;
-});
+  // set text first time it's requested
+  if (!cardSub.textContent) cardSub.textContent = '💡 ' + queue[idx].hint;
+  cardSub.classList.add('revealed');
+  hintBtn.style.borderColor = 'var(--yellow)';
+  hintBtn.style.color = '#b8860b';
+}
+function hideHint() {
+  cardSub.classList.remove('revealed');
+  hintBtn.style.borderColor = '';
+  hintBtn.style.color = '';
+}
+
+hintBtn.addEventListener('mousedown', e => { e.preventDefault(); showHint(); updateHintBadge(true); });
+hintBtn.addEventListener('mouseup',   () => { hideHint(); updateHintBadge(false); });
+hintBtn.addEventListener('mouseleave',() => { hideHint(); updateHintBadge(false); });
+hintBtn.addEventListener('touchstart', e => { e.preventDefault(); showHint(); updateHintBadge(true); }, { passive: false });
+hintBtn.addEventListener('touchend',   () => { hideHint(); updateHintBadge(false); });
+hintBtn.addEventListener('touchcancel',() => { hideHint(); updateHintBadge(false); });
 
 // ── Skip ──────────────────────────────────────────────────────────────────
 document.getElementById('skipBtn').addEventListener('click', () => {
