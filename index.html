@@ -455,6 +455,7 @@ main {
 
 <!-- Category pills -->
 <div class="cat-row" id="catRow">
+  <button class="cat-pill active" data-cat="mc7">マインクラフト#7</button>
   <button class="cat-pill active" data-cat="easy">まずはここから</button>
   <button class="cat-pill" data-cat="position">配置に関する単語</button>
   <button class="cat-pill" data-cat="css-prop">CSSプロパティ</button>
@@ -537,14 +538,55 @@ main {
 <script>
 // ── Word bank ─────────────────────────────────────────────────────────────
 const BANKS = {
+  'mc7': {
+    label: 'Minecraft#07',
+    items: [
+      { ja: 'モニター', en: 'monitor', hint: 'm○○○○○r' },
+      { ja: '上', en: 'top', hint: '「頂点」と訳されることも' },
+      { ja: '右', en: 'right', hint: 'r○○○○'  },
+      { ja: '左', en: 'left', hint: 'l○○○'   },
+      { ja: 'クリア/消去する', en: 'clear', hint: 'cl○○○'   },
+      { ja: '真', en: 'true', hint: 'プログラミング以外の文脈だと「真実」と訳される'},
+      { ja: '偽', en: 'false', hint: 'プログラミング以外の文脈だと「失敗」と訳される'},
+      { ja: '行', en: 'line', hint: 'ライン'},
+      { ja: '時間', en: 'time', hint: 't○○e'},
+      { ja: '書きこむ', en: 'write', hint: 'w○○○e'},
+      { ja: '待つ', en: 'sleep', hint: 'プログラミング以外の文脈だと「眠る」と訳される'},
+      { ja: '終わる', en: 'end', hint: 'e○○'},
+      { ja: '行う', en: 'do', hint: '○o'},
+      { ja: '～の間', en: 'while', hint: 'w○o○o'},
+      { ja: '周辺【難】', en: 'peripheral', hint: 'peri○○○○○l'},
+      { ja: '形式', en: 'format', hint: 'フォーマット'},
+      { ja: '文字', en: 'text', hint: 't○○○'},
+      { ja: '設定する', en: 'set', hint: 's○○'},
+      { ja: '色', en: 'color', hint: 'co○o○'},
+      { ja: '日', en: 'day', hint: 'd○○'},
+      { ja: '読み込む', en: 'load', hint: 'l○○○'},
+      { ja: 'タッチパネル', en: 'touchpanel', hint: 't○○○○p○○○○'},
+      { ja: 'ボタン', en: 'button', hint: 'b○○○on'},
+      { ja: '作る', en: 'make', hint: 'm○○○'},
+      { ja: '描く/表示する', en: 'draw', hint: 'd○○○'},
+      { ja: 'パネル', en: 'panel', hint: 'p○○○○'},
+      { ja: '実行する', en: 'run', hint: '「走る」とも訳される'},
+      { ja: '選択肢', en: 'option', hint: 'オプション'},
+      { ja: 'イベント', en: 'event', hint: 'e○○○○'},
+      { ja: '押し出す', en: 'push', hint: 'p○○○'},
+      { ja: '影響', en: 'effect', hint: 'eff○○○'},
+      { ja: 'ドア', en: 'door', hint: 'd○○○'},
+      { ja: '連結', en: 'add', hint: 'a○○'},
+      { ja: '印/旗', en: 'flag', hint: 'f○○○'},
+      { ja: '名前', en: 'name', hint: 'n○○○'},
+      { ja: '秒', en: 'second', hint: 'かつての最小時間単位minute(分)から更に分割した時間単位のためs○○o○○(次番目)と呼ばれる'},
+    ]
+  },
   'easy': {
     label: 'まずはここから',
     items: [
       { ja: '背景',               en: 'background',   hint: 'b○○○gr○○○d' },
       { ja: 'フォント',           en: 'font',         hint: 'f○○○' },
-      { ja: '大きさ、サイズ',      　　　 en: 'size',           hint: 's○○○' },
-      { ja: '整列させる',       　en: 'align',         hint: 'a(～へ,を表す接頭辞) + lin(線)' },
-      { ja: '行',            　 　en: 'line',         hint: 'l○○○' },
+      { ja: '大きさ、サイズ',      en: 'size',           hint: 's○○○' },
+      { ja: '整列させる',         en: 'align',         hint: 'a(～へ,を表す接頭辞) + lin(線)' },
+      { ja: '行',                en: 'line',         hint: 'l○○○' },
       { ja: '外余白',             en: 'margin',              hint: 'mar○○○.のりしろ、と訳されることも.' },
       { ja: '内余白',             en: 'padding',             hint: 'pad○○○○○。アメフトの肩パッド、は相手との体当たりを衝撃をモロにもらわないように"余白"を作るための道具' },
       { ja: '配置',             en: 'position',            hint: 'pos○○○○○○(ex. サッカーのポ~~~)' },
@@ -630,10 +672,10 @@ const BANKS = {
   'html': {
     label: 'HTMLタグ※<>は省略する',
     items: [
-      //{ ja: 'HTML宣言',             en: '!DOCTYPE html', hint: '<!DOC○○○○ html>' },
+    //   { ja: 'HTML宣言',             en: '!DOCTYPE html', hint: '<!DOC○○○○ html>' },
       { ja: 'ページ全体',           en: 'html',          hint: '<ht○○>' },
       { ja: 'メタ情報エリア',       en: 'head',          hint: '<he○○>' },
-      //{ ja: '文字コード指定',       en: 'meta charset',  hint: '<meta ch○○○○○>' },
+    //   { ja: '文字コード指定',       en: 'meta charset',  hint: '<meta ch○○○○○>' },
       { ja: 'CSS読み込み',          en: 'link',          hint: '<li○○>' },
       { ja: 'ページ本文',           en: 'body',          hint: '<bo○○>' },
       { ja: 'ヘッダー',             en: 'header',        hint: '<hea○○○>' },
