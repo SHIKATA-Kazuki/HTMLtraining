@@ -31,9 +31,6 @@ const sAcc        = document.getElementById('sAcc');
 const sTime       = document.getElementById('sTime');
 const toast       = document.getElementById('toast');
 const complete    = document.getElementById('complete');
-// const complete    = document.getElementById('showSpell');
-const showSpell = document.getElementById('showSpell');
-let showSpellValue = parseFloat(showSpell.value);
 const revealBadge = document.getElementById('revealBadge');
 const autoHintWrap    = document.getElementById('autoHintWrap');
 const autoHintLabel   = document.getElementById('autoHintLabel');
@@ -41,15 +38,7 @@ const countdownRing   = document.getElementById('countdownRing');
 const countdownArc    = document.getElementById('countdownArc');
 const CIRCUMFERENCE   = 50.27; // 2π×8
 
-//スペル常時表示モードの切替
-
-showSpell.addEventListener("input", function () {
-  showSpellValue = parseFloat(document.getElementById('showSpell').value);
-  if (showSpellValue > 0.5 ){ revealChars(true); }
-});
-
-
-  // ── Category switch ───────────────────────────────────────────────────────
+// ── Category switch ───────────────────────────────────────────────────────
 document.getElementById('catRow').addEventListener('click', e => {
   const btn = e.target.closest('.cat-pill');
   if (!btn) return;
@@ -131,9 +120,7 @@ function showCard(initial = false) {
   startAutoHint();
 
   renderCharDisplay('');
-  if (showSpellValue > 0.5) {
-    missedItems.push(item);
-  }
+
   if (!initial) {
     card.classList.add('fly-in');
     card.addEventListener('animationend', () => card.classList.remove('fly-in'), { once: true });
@@ -149,7 +136,6 @@ const AUTO_HINT_MS = 3000; //3秒後ヒントを表示
 
 function startAutoHint() {
   clearAutoHint();
-  if (showSpellValue > 0.5 ){ revealChars(true); }
   autoHintStart = Date.now();
   countdownRing.classList.remove('done');
   autoHintLabel.textContent = '3秒後にヒントを表示…';
@@ -168,6 +154,7 @@ function startAutoHint() {
       if (!cardSub.textContent) cardSub.textContent = '💡 ' + (queue[idx]?.hint ?? '');
       cardSub.classList.add('revealed');
     
+      // ↓ この1行を追加
       if (queue[idx] && !missedItems.find(m => m.en === queue[idx].en)) missedItems.push(queue[idx]);
     }
   };
@@ -232,7 +219,7 @@ answer.addEventListener('input', () => {
 });
 
 answer.addEventListener('keydown', e => {
-  if (e.key === 'Enter') { e.preventDefault(); checkAnswer(); return;}
+  if (e.key === 'Enter') { e.preventDefault(); checkAnswer(); return; }
   if (e.key === 'Control' && !e.shiftKey) { showHint(); updateHintBadge(true); }
   if (e.key === 'Shift' && e.ctrlKey)     { revealChars(true); }
   if (e.key === 'Control' && e.shiftKey)  { revealChars(true); }
@@ -390,7 +377,7 @@ function showComplete() {
   document.getElementById('compTime').textContent = totalSec + 's';
 
   let emoji = '🎉', title = 'セット完了！', rankText = '', rankColor = '';
-  if (avgAcc >= 95 && avgWpm >= 40) { emoji='🏆'; title='パーフェクト！'; rankText='完全無欠webデザイナー'; rankColor='#FFD166'; }
+  if (avgAcc = 100 && avgWpm >= 40) { emoji='🏆'; title='パーフェクト！'; rankText='完全無欠webデザイナー'; rankColor='#FFD166'; }
   else if (avgAcc >= 90) { emoji='✨'; title='よくできました！'; rankText='もしかしてプロ？'; rankColor='#06D6A0'; }
   else if (avgAcc >= 80) { emoji='👍'; title='いい調子！'; rankText='右肩上がり'; rankColor='#4361EE'; }
   else { emoji='💪'; title='よく頑張りました！'; rankText='駆け出しwebデザイナー'; rankColor='#EF476F'; }

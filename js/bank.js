@@ -517,210 +517,480 @@ export const BANKS = {
           memo: '「Lサイズ」「Mサイズ」のサイズ！日常でもよく使う単語です。',
         }
       },
-{
-  ja: '整列させる',
-  en: 'align',
-  hint: '○lign',
-  exp: {
+      { ja: '整列させる',
+        en: 'align',
+        hint: '○lign',
+        exp: {
+                morphemes: [
+                  { text: 'a',   meaning: '～へ,を表す接頭辞' },
+                  { text: 'lign', meaning: '=lin(線)' },
+                ],
+          etymology: '「線(line)に合わせる」がもともとの意味です。文字や画像を一直線にきれいに並べることを表します。',
+          code: `/* 中央揃え */\n.text {\n  text-align: center;\n}`,
+          memo: '「アラインメント(Alignment)」という言葉はゲームや機械でも「位置合わせ」の意味で使われます。'
+        }
+      },
+      { ja: '行',
+        en: 'line',
+        hint: 'l○○○',
+        exp: {
+          etymology: '「一本の線」が元の意味です。文字が横に並んだ一本を「行(line)」と呼ぶようになりました。',
+          code: `p {\n  line-height: 1.8;\n}`,
+          memo: 'ライン(line)というカタカナでもよく使われています。'
+        }
+      },
+      { ja: '外余白',
+        en: 'margin',
+        hint: 'mar○○○',
+        exp: {
+          etymology: '紙の「余白」や「のりしろ」が語源です。要素の外側に空けるスペースを表します。',
+          code: `div {\n  margin: 20px;\n}`,
+          memo: '「要素どうしの距離」を作るもの、と覚えると分かりやすいです。'
+        }
+      },
+      { ja: '内余白',
+        en: 'padding',
+        hint: 'padd○○○',
+        exp: {
           morphemes: [
-            { text: 'a',   meaning: '～へ,を表す接頭辞' },
-            { text: 'lign', meaning: '=lin(線)' },
+            { text: 'pad',   meaning: 'パッド,余白を作る' },
+            { text: 'ing', meaning: '動名詞' },
           ],
-    etymology: '「線(line)に合わせる」がもともとの意味です。文字や画像を一直線にきれいに並べることを表します。',
-    code: `/* 中央揃え */\n.text {\n  text-align: center;\n}`,
-    memo: '「アラインメント(Alignment)」という言葉はゲームや機械でも「位置合わせ」の意味で使われます。'
-  }
-},
-{
-  ja: '行',
-  en: 'line',
-  hint: 'l○○○',
-  exp: {
-    etymology: '「一本の線」が元の意味です。文字が横に並んだ一本を「行(line)」と呼ぶようになりました。',
-    code: `p {\n  line-height: 1.8;\n}`,
-    memo: 'ライン(line)というカタカナでもよく使われています。'
-  }
-},
-{
-  ja: '外余白',
-  en: 'margin',
-  hint: 'mar○○○',
-  exp: {
-    etymology: '紙の「余白」や「のりしろ」が語源です。要素の外側に空けるスペースを表します。',
-    code: `div {\n  margin: 20px;\n}`,
-    memo: '「要素どうしの距離」を作るもの、と覚えると分かりやすいです。'
-  }
-},
-{
-  ja: '内余白',
-  en: 'padding',
-  hint: 'padd○○○',
-  exp: {
-    morphemes: [
-      { text: 'pad',   meaning: 'パッド,余白を作る' },
-      { text: 'ing', meaning: '動名詞' },
-    ],
-    etymology: 'pad は「クッション・詰め物」の意味です。アメフト選手が肩に付けている肩パッドなど日本語でもよく使われます。CSSでは中にクッションを入れるように、要素の内側に余白を作ります。',
-    code: `button {\n  padding: 10px 20px;\n}`,
-    memo: 'クッション(pad)を入れる＝内側に余裕を作る、と考えると覚えやすいです。'
-  }
-},
-{
-  ja: '配置',
-  en: 'position',
-  hint: 'po○○tion',
-  exp: {
-    morphemes: [
-      { text: 'pos',   meaning: '置く' },
-      { text: 'tion', meaning: '名詞化' },
-    ],
-    etymology: '「置かれた場所」がもともとの意味です。CSSでは要素をどこへ配置するかを指定します。',
-    code: `div {\n  position: absolute;\n}`,
-    memo: 'サッカーの「ポジション」と同じ単語です。'
-  }
-},
-{
-  ja: '文字',
-  en: 'text',
-  hint: 't○○○',
-  exp: {
-    etymology: 'もともとは「本文・文章」という意味です。文字そのものや文章全体を表します。',
-    code: `p {\n  text-align: center;\n}`,
-    memo: 'textbook（テキストブック＝教科書）の text と同じです。'
-  }
-},
-{
-  ja: '順',
-  en: 'index',
-  hint: '○○dex',
-  exp: {
-    etymology: '本の「索引」が語源です。番号を付けて順番を管理する意味になりました。',
-    code: `div {\n  z-index: 10;\n}`,
-    memo: '辞書の「索引(index)」と同じ単語です。'
-  }
-},
-{
-  ja: '幅',
-  en: 'width',
-  hint: 'wid○○',
-  exp: {
-    morphemes: [
-      { text: 'wid(e)',   meaning: '広い' },
-      { text: 'th', meaning: '程度を表す形容詞化' },
-    ],
-    etymology: 'wide（広い）に -th が付いて広さ、つまり「幅」を意味する名詞になりました。',
-    code: `div {\n  width: 300px;\n}`,
-    memo: 'wide → width の変化は long → length とセットで覚えましょう。'
-  }
-},
-{
-  ja: '長さ',
-  en: 'length',
-  hint: 'leng○○',
-  exp: {
-    morphemes: [
-      { text: 'wid(e)',   meaning: '広い' },
-      { text: 'th', meaning: '名詞化の接尾辞' },
-    ],
-    etymology: 'long（長い）からできた「長さ」という名詞です。',
-    code: `const len = text.length;`,
-    memo: 'JavaScriptでは文字数や配列の個数も length で表します。'
-  }
-},
-{
-  ja: '高さ',
-  en: 'height',
-  hint: 'hei○○○○',
-  exp: {
-    morphemes: [
-      { text: 'high',   meaning: '高い' },
-      { text: '-t', meaning: '名詞化の接尾辞' },
-    ],
-    etymology: 'high（高い）が変化して「高さ」という名詞になりました。',
-    code: `div {\n  height: 100px;\n}`,
-    memo: 'high → height は wide → width と同じ名詞化の仲間です。'
-  }
-},
-{
-  ja: '色',
-  en: 'color',
-  hint: 'col○○',
-  exp: {
-    etymology: 'ラテン語で「色」を意味する言葉が語源です。そのまま色を表します。',
-    code: `p {\n  color: red;\n}`,
-    memo: 'カラフル(colorful)の color と同じです。'
-  }
-},
-{
-  ja: '線、境界',
-  en: 'border',
-  hint: 'bor○○○',
-  exp: {
-    etymology: '国境や境界線を意味する言葉です。CSSでは要素を囲む線を表します。',
-    code: `div {\n  border: 2px solid black;\n}`,
-    memo: 'ボーダー(border)柄や国境(border)と同じ単語です。'
-  }
-},
-{
-  ja: '透明度',
-  en: 'opacity',
-  hint: 'opa○○○○',
-  exp: {
-    etymology: 'opaque（不透明）が語源です。CSSでは「どれだけ見えるか」を0〜1で指定します。',
-    code: `img {\n  opacity: 0.5;\n}`,
-    memo: '0で完全に透明、1で完全に見える、と覚えましょう。'
-  }
-},
-{
-  ja: '要素',
-  en: 'item',
-  hint: 'i○○○',
-  exp: {
-    etymology: '一覧の「一つ一つの項目」を意味します。HTMLやJavaScriptでは一つの要素を表す名前によく使われます。',
-    code: `items.forEach(item => {\n  console.log(item);\n});`,
-    memo: '買い物リストの「商品(item)」と同じ意味です。'
-  }
-}
-]
+          etymology: 'pad は「クッション・詰め物」の意味です。アメフト選手が肩に付けている肩パッドなど日本語でもよく使われます。CSSでは中にクッションを入れるように、要素の内側に余白を作ります。',
+          code: `button {\n  padding: 10px 20px;\n}`,
+          memo: 'クッション(pad)を入れる＝内側に余裕を作る、と考えると覚えやすいです。'
+        }
+      },
+      { ja: '配置',
+        en: 'position',
+        hint: 'po○○tion',
+        exp: {
+          morphemes: [
+            { text: 'pos',   meaning: '置く' },
+            { text: 'tion', meaning: '名詞化' },
+          ],
+          etymology: '「置かれた場所」がもともとの意味です。CSSでは要素をどこへ配置するかを指定します。',
+          code: `div {\n  position: absolute;\n}`,
+          memo: 'サッカーの「ポジション」と同じ単語です。'
+        }
+      },
+      { ja: '文字',
+        en: 'text',
+        hint: 't○○○',
+        exp: {
+          etymology: 'もともとは「本文・文章」という意味です。文字そのものや文章全体を表します。',
+          code: `p {\n  text-align: center;\n}`,
+          memo: 'textbook（テキストブック＝教科書）の text と同じです。'
+        }
+      },
+      { ja: '順',
+        en: 'index',
+        hint: '○○dex',
+        exp: {
+          etymology: '本の「索引」が語源です。番号を付けて順番を管理する意味になりました。',
+          code: `div {\n  z-index: 10;\n}`,
+          memo: '辞書の「索引(index)」と同じ単語です。'
+        }
+      },
+      { ja: '幅',
+        en: 'width',
+        hint: 'wid○○',
+        exp: {
+          morphemes: [
+            { text: 'wid(e)',   meaning: '広い' },
+            { text: 'th', meaning: '程度を表す形容詞化' },
+          ],
+          etymology: 'wide（広い）に -th が付いて広さ、つまり「幅」を意味する名詞になりました。',
+          code: `div {\n  width: 300px;\n}`,
+          memo: 'wide → width の変化は long → length とセットで覚えましょう。'
+        }
+      },
+      { ja: '長さ',
+        en: 'length',
+        hint: 'leng○○',
+        exp: {
+          morphemes: [
+            { text: 'wid(e)',   meaning: '広い' },
+            { text: 'th', meaning: '名詞化の接尾辞' },
+          ],
+          etymology: 'long（長い）からできた「長さ」という名詞です。',
+          code: `const len = text.length;`,
+          memo: 'JavaScriptでは文字数や配列の個数も length で表します。'
+        }
+      },
+      { ja: '高さ',
+        en: 'height',
+        hint: 'hei○○○○',
+        exp: {
+          morphemes: [
+            { text: 'high',   meaning: '高い' },
+            { text: '-t', meaning: '名詞化の接尾辞' },
+          ],
+          etymology: 'high（高い）が変化して「高さ」という名詞になりました。',
+          code: `div {\n  height: 100px;\n}`,
+          memo: 'high → height は wide → width と同じ名詞化の仲間です。'
+        }
+      },
+      { ja: '色',
+        en: 'color',
+        hint: 'col○○',
+        exp: {
+          etymology: 'ラテン語で「色」を意味する言葉が語源です。そのまま色を表します。',
+          code: `p {\n  color: red;\n}`,
+          memo: 'カラフル(colorful)の color と同じです。'
+        }
+      },
+      { ja: '線、境界',
+        en: 'border',
+        hint: 'bor○○○',
+        exp: {
+          etymology: '国境や境界線を意味する言葉です。CSSでは要素を囲む線を表します。',
+          code: `div {\n  border: 2px solid black;\n}`,
+          memo: 'ボーダー(border)柄や国境(border)と同じ単語です。'
+        }
+      },
+      { ja: '透明度',
+        en: 'opacity',
+        hint: 'opa○○○○',
+        exp: {
+          etymology: 'opaque（不透明）が語源です。CSSでは「どれだけ見えるか」を0〜1で指定します。',
+          code: `img {\n  opacity: 0.5;\n}`,
+          memo: '0で完全に透明、1で完全に見える、と覚えましょう。'
+        }
+      },
+      { ja: '要素',
+        en: 'item',
+        hint: 'i○○○',
+        exp: {
+          etymology: '一覧の「一つ一つの項目」を意味します。HTMLやJavaScriptでは一つの要素を表す名前によく使われます。',
+          code: `items.forEach(item => {\n  console.log(item);\n});`,
+          memo: '買い物リストの「商品(item)」と同じ意味です。'
+        }
+      }
+      ]
   },
   'position': {
     label: '配置に関する単語',
     items: [
-      { ja: '位置',              en: 'position',            hint: 'pos○○○○○○' },
-      { ja: '中央',              en: 'center'  ,            hint: 'c○○t○○' },
-      { ja: '右',                en: 'right'   ,            hint: 'r○○○○'  },
-      { ja: '左',                en: 'left'    ,            hint: 'l○○○'   },
-      { ja: 'フレックスボックス',           en: 'flexbox',         hint: 'f○○○b○○。HTMLの基本は要素を"箱"として捉えること.' },
+      { ja: '位置',
+        en: 'position',
+        hint: 'po○○tion',
+        exp: {
+          morphemes: [
+            { text: 'pos',   meaning: '置く' },
+            { text: 'tion', meaning: '名詞化' },
+          ],
+          etymology: '「置かれた場所」がもともとの意味です。CSSでは要素をどこへ配置するかを指定します。',
+          code: `div {\n  position: absolute;\n}`,
+          memo: 'サッカーの「ポジション」と同じ単語です。'
+        }
+      },
+      { ja: '中央',              en: 'center'  ,            hint: 'cent○○' ,
+        exp: {
+          morphemes: [
+            { text: 'center',   meaning: '中央' },
+          ],
+          etymology: 'これはこれで覚えてください',
+          code: `body {\n align-items: center; \n}`,
+          memo: 'アイドルがステージにあがったとき中央にいる人のことをセンター(=center)といいます'
+        }
+      },
+      { ja: '右',
+        en: 'right',
+        hint: 'r○○○○',
+        exp: {
+          morphemes: [
+            { text: 'right', meaning: '右・正しい' },
+          ],
+          etymology: '古英語では「まっすぐ・正しい」という意味があり、そこから右方向も表すようになりました。',
+          code: `div {\n  right: 20px;\n}`,
+          memo: 'right は「右」と「正しい」の両方の意味があります。'
+        }
+      },
+      { ja: '左',
+        en: 'left',
+        hint: 'l○○○',
+        exp: {
+          morphemes: [
+            { text: 'left', meaning: '左' },
+          ],
+          etymology: '古英語から続く基本単語で、「左側」を意味します。',
+          code: `div {\n  left: 20px;\n}`,
+          memo: 'right（右）とセットで覚えましょう。'
+        }
+      },
+      { ja: 'フレックス',           en: 'flex',         hint: 'fle○' ,
+        exp: {
+          morphemes: [
+            { text: 'flex',   meaning: '曲げる' },
+            // { text: 'ex', meaning: '箱' },
+          ],
+          etymology: 'flexibleと同じ語源を持つ単語で、いずれも「柔軟性」を示す言葉です。',
+          code: `div {\n  display: flex;\n}`,
+          memo: 'HTMLではflexboxという配置方法が登場します。'
+        }
+      },
     ]
   },
   'css-prop':{
     label: 'CSSプロパティ',
     items: [
-      { ja: '背景色',               en: 'background-color',   hint: 'background-○○○○○' },
-      { ja: '角丸',                 en: 'border-radius',       hint: 'border-○○○○○○' },
     //   { ja: '影',                   en: 'box-shadow',          hint: 'box-○○○○○○' },
-      { ja: '表示方法',             en: 'display',             hint: 'dis○○○○○' },
-      { ja: '並び方向（Flex）',     en: 'flex-direction',      hint: 'flex-○○○○○○○○○' },
-      { ja: 'フォント名',           en: 'font-family',         hint: 'font-○○○○○○' },
-      { ja: 'フォントサイズ',       en: 'font-size',           hint: 'font-○○○○' },
-      { ja: 'フォントの太さ',       en: 'font-weight',         hint: 'font-○○○○○○' },
-      { ja: '主軸の揃え方',         en: 'justify-content',     hint: 'justify-○○○○○○○' },
-      { ja: '交差軸の揃え方',       en: 'align-items',         hint: 'align-○○○○○' },
-      { ja: '行の高さ',             en: 'line-height',         hint: 'line-○○○○○○' },
-      { ja: '外余白',               en: 'margin',              hint: 'mar○○○' },
-      { ja: '内余白',               en: 'padding',             hint: 'pad○○○○○' },
-      { ja: '配置方法',             en: 'position',            hint: 'pos○○○○○○' },
-      { ja: '文字装飾',             en: 'text-decoration',     hint: 'text-○○○○○○○○○○' },
-    //   { ja: 'アニメーション遷移',   en: 'transition',          hint: 'trans○○○○○○' },
-    //   { ja: '変形',                 en: 'transform',           hint: 'trans○○○○○' },
-      { ja: 'はみ出し処理',         en: 'overflow',            hint: 'over○○○○' },
-    //   { ja: '重なり順',             en: 'z-index',             hint: 'z-○○○○○' },
-      { ja: '幅',                   en: 'width',               hint: 'wi○○○' },
-      { ja: '高さ',                 en: 'height',              hint: 'hei○○○○' },
-      { ja: '文字色を指定するときのプロパティは？',  en: 'color', hint: 'col○○' },
-      { ja: '枠線',                 en: 'border',              hint: '境界線、と言い換える。bor○○○' },
-      { ja: '透明度',               en: 'opacity',             hint: 'opa○○○○' },
-    //   { ja: 'カーソル形状',         en: 'cursor',              hint: 'cur○○○○' },
+    {ja: '背景色',
+      en: 'background-color',
+      hint: 'background-○○○○○',
+      exp: {
+        morphemes: [
+          { text: 'background', meaning: '背景・下地' },
+          { text: 'color', meaning: '色' },
+        ],
+        etymology: 'background（背景）と color（色）を組み合わせた言葉です。要素の背景の色を指定します。',
+        code: `body {\n  background-color: #f5f5f5;\n}`,
+        memo: 'background は画像も指定できますが、background-color は「色だけ」を指定します。'
+      }
+    },
+    {ja: '角丸',
+      en: 'border-radius',
+      hint: 'border-○○○○○○',
+      exp: {
+        morphemes: [
+          { text: 'border', meaning: '境界線・枠' },
+          { text: 'radius', meaning: '半径' },
+        ],
+        etymology: '円の半径(radius)を利用して角を丸くします。値が大きいほど丸みが強くなります。',
+        code: `.box {\n  border-radius: 12px;\n}`,
+        memo: 'radius は数学で習う「半径」です。'
+      }
+    },
+    {ja: '表示方法',
+      en: 'display',
+      hint: 'dis○○○○○',
+      exp: {
+        morphemes: [
+          { text: 'dis', meaning: '外へ' },
+          { text: 'play', meaning: '広げる・並べる' },
+        ],
+        etymology: '「人の前へ広げて見せる」がもとの意味です。CSSでは要素をどのように表示するかを指定します。',
+        code: `.menu {\n  display: flex;\n}`,
+        memo: 'ディスプレイ(display)という言葉と同じ語源です。'
+      }
+    },
+    {ja: '並び方向（Flex）',
+      en: 'flex-direction',
+      hint: 'flex-○○○○○○○○○',
+      exp: {
+        morphemes: [
+          { text: 'flex', meaning: '曲げる・柔軟な' },
+          { text: 'direction', meaning: '方向' },
+        ],
+        etymology: 'Flexboxの要素を「どの方向へ並べるか」を指定します。',
+        code: `.container {\n  display: flex;\n  flex-direction: column;\n}`,
+        memo: 'direction は「ディレクション（方向）」の direction です。'
+      }
+    },
+    {ja: 'フォント名',
+      en: 'font-family',
+      hint: 'font-○○○○○○',
+      exp: {
+        morphemes: [
+          { text: 'font', meaning: '書体' },
+          { text: 'family', meaning: '仲間・グループ' },
+        ],
+        etymology: '同じデザインの書体グループ（ファミリー）を指定します。',
+        code: `body {\n  font-family: "Noto Sans JP", sans-serif;\n}`,
+        memo: 'family は「家族」だけでなく「仲間」という意味もあります。'
+      }
+    },
+    {ja: 'フォントサイズ',
+      en: 'font-size',
+      hint: 'font-○○○○',
+      exp: {
+        morphemes: [
+          { text: 'font', meaning: '書体' },
+          { text: 'size', meaning: '大きさ' },
+        ],
+        etymology: '文字（フォント）の大きさを指定します。',
+        code: `p {\n  font-size: 18px;\n}`,
+        memo: 'size は服のサイズと同じ意味です。'
+      }
+    },
+    {ja: 'フォントの太さ',
+      en: 'font-weight',
+      hint: 'font-○○○○○○',
+      exp: {
+        morphemes: [
+          { text: 'font', meaning: '書体' },
+          { text: 'weight', meaning: '重さ' },
+        ],
+        etymology: '文字の「重さ」で太さを表します。数値が大きいほど太くなります。',
+        code: `h1 {\n  font-weight: bold;\n}`,
+        memo: 'heavy（重い）と同じように「重さ＝太さ」と考えます。'
+      }
+    },
+    {ja: '主軸の揃え方',
+      en: 'justify-content',
+      hint: 'justify-○○○○○○○',
+      exp: {
+        morphemes: [
+          { text: 'justify', meaning: 'そろえる・整える' },
+          { text: 'content', meaning: '中身・内容' },
+        ],
+        etymology: 'Flexboxの主軸方向に中身(content)をどのように並べるかを指定します。justifyは正義(justice)と同じ語源を持っており、「正しくさせる」という意味から「整える」という言葉へと変化しました。',
+        code: `.container {\n  display: flex;\n  justify-content: center;\n}`,
+        memo: '「コンテンツを整列させる」と考えると覚えやすいです。'
+      }
+    },
+    {ja: '交差軸の揃え方',
+      en: 'align-items',
+      hint: 'align-○○○○○',
+      exp: {
+        morphemes: [
+          { text: 'align', meaning: '一直線にそろえる' },
+          { text: 'items', meaning: '要素たち' },
+        ],
+        etymology: 'Flexboxの交差軸方向で、要素(items)を一直線にそろえます。',
+        code: `.container {\n  display: flex;\n  align-items: center;\n}`,
+        memo: 'align は「線(line)に合わせる」が語源でした。'
+      }
+    },
+    {ja: '行の高さ',
+      en: 'line-height',
+      hint: 'line-○○○○○○',
+      exp: {
+        morphemes: [
+          { text: 'line', meaning: '行' },
+          { text: 'height', meaning: '高さ' },
+        ],
+        etymology: '文字の1行分の高さを指定します。文字サイズではなく、行と行の間隔も変わります。',
+        code: `p {\n  line-height: 1.8;\n}`,
+        memo: '読みやすい文章では line-height がとても重要です。'
+      }
+    },
+    {ja: '文字装飾',
+      en: 'text-decoration',
+      hint: 'text-○○○○○○○○○○',
+      exp: {
+        morphemes: [
+          { text: 'text', meaning: '文字' },
+          { text: 'de', meaning: '付け加える' },
+          { text: 'cor', meaning: '飾る' },
+          { text: 'ation', meaning: '名詞化' },
+        ],
+        etymology: '文字(text)に装飾(decoration)を加えます。下線や取り消し線などを指定できます。',
+        code: `a {\n  text-decoration: none;\n}`,
+        memo: 'decoration はクリスマスデコレーションと同じ単語です。'
+      }
+    },
+    {ja: 'はみ出し処理',
+      en: 'overflow',
+      hint: 'over○○○○',
+      exp: {
+        morphemes: [
+          { text: 'over', meaning: '上へ・超えて' },
+          { text: 'flow', meaning: '流れる' },
+        ],
+        etymology: '「あふれて流れる」がもとの意味です。要素からはみ出した内容をどう扱うか指定します。',
+        code: `.box {\n  overflow: hidden;\n}`,
+        memo: 'overflow は「オーバーフロー（容量オーバー）」という言葉でも使われます。'
+      }
+    },
+      // 「まずはここから」の復習編
+      { ja: '外余白',
+        en: 'margin',
+        hint: 'mar○○○',
+        exp: {
+          etymology: '紙の「余白」や「のりしろ」が語源です。要素の外側に空けるスペースを表します。',
+          code: `div {\n  margin: 20px;\n}`,
+          memo: '「要素どうしの距離」を作るもの、と覚えると分かりやすいです。'
+        }
+      },
+      { ja: '内余白',
+        en: 'padding',
+        hint: 'padd○○○',
+        exp: {
+          morphemes: [
+            { text: 'pad',   meaning: 'パッド,余白を作る' },
+            { text: 'ing', meaning: '動名詞' },
+          ],
+          etymology: 'pad は「クッション・詰め物」の意味です。アメフト選手が肩に付けている肩パッドなど日本語でもよく使われます。CSSでは中にクッションを入れるように、要素の内側に余白を作ります。',
+          code: `button {\n  padding: 10px 20px;\n}`,
+          memo: 'クッション(pad)を入れる＝内側に余裕を作る、と考えると覚えやすいです。'
+        }
+      },
+      { ja: '配置',
+        en: 'position',
+        hint: 'po○○tion',
+        exp: {
+          morphemes: [
+            { text: 'pos',   meaning: '置く' },
+            { text: 'tion', meaning: '名詞化' },
+          ],
+          etymology: '「置かれた場所」がもともとの意味です。CSSでは要素をどこへ配置するかを指定します。',
+          code: `div {\n  position: absolute;\n}`,
+          memo: 'サッカーの「ポジション」と同じ単語です。'
+        }
+      },
+      { ja: '幅',
+        en: 'width',
+        hint: 'wid○○',
+        exp: {
+          morphemes: [
+            { text: 'wid(e)',   meaning: '広い' },
+            { text: 'th', meaning: '程度を表す形容詞化' },
+          ],
+          etymology: 'wide（広い）に -th が付いて広さ、つまり「幅」を意味する名詞になりました。',
+          code: `div {\n  width: 300px;\n}`,
+          memo: 'wide → width の変化は long → length とセットで覚えましょう。'
+        }
+      },
+      { ja: '高さ',
+        en: 'height',
+        hint: 'hei○○○○',
+        exp: {
+          morphemes: [
+            { text: 'high',   meaning: '高い' },
+            { text: '-t', meaning: '名詞化の接尾辞' },
+          ],
+          etymology: 'high（高い）が変化して「高さ」という名詞になりました。',
+          code: `div {\n  height: 100px;\n}`,
+          memo: 'high → height は wide → width と同じ名詞化の仲間です。'
+        }
+      },
+      { ja: '文字色を指定するときのプロパティは？',
+        en: 'color',
+        hint: 'col○○',
+        exp: {
+          etymology: 'ラテン語で「色」を意味する言葉が語源です。そのまま色を表します。',
+          code: `p {\n  color: red;\n}`,
+          memo: 'カラフル(colorful)の color と同じです。'
+        }
+      },
+      { ja: '枠線',
+        en: 'border',
+        hint: 'bor○○○',
+        exp: {
+          morphemes: [
+            { text: 'bord', meaning: '切る' },
+            { text: 'er', meaning: '者・もの' },
+          ],
+          etymology: '国境や境界線を意味する言葉です。CSSでは要素を囲む線を表します。',
+          code: `div {\n  border: 2px solid black;\n}`,
+          memo: 'ボーダー(border)柄や国境(border)と同じ単語です。'
+        }
+      },
+      { ja: '透明度',
+        en: 'opacity',
+        hint: 'opa○○○○',
+        exp: {
+          etymology: 'opaque（不透明）が語源です。CSSでは「どれだけ見えるか」を0〜1で指定します。',
+          code: `img {\n  opacity: 0.5;\n}`,
+          memo: '0で完全に透明、1で完全に見える、と覚えましょう。'
+        }
+      },
+      //   { ja: 'アニメーション遷移',   en: 'transition',          hint: 'trans○○○○○○' },
+      //   { ja: '変形',                 en: 'transform',           hint: 'trans○○○○○' },
+      //   { ja: '重なり順',             en: 'z-index',             hint: 'z-○○○○○' },
+      //   { ja: 'カーソル形状',         en: 'cursor',              hint: 'cur○○○○' },
     ]
   },
   'selector': {
@@ -729,35 +999,33 @@ export const BANKS = {
       { ja: 'idを指定するとき',               en: '#',   hint: 'shiftキーを使わないといけないね' },
       { ja: 'クラスを指定するとき',                 en: '.',       hint: 'ピリオドを使うだけ' },
       { ja: '例えばbodyタグをdisplay:flex;のように指定するとき',   en: 'body{display:felx;}', hint: '改行・スペースなしで全て書いてね' },
-    //   { ja: 'クラス選択',           en: '.class',              hint: '.cl○○○' },
-    //   { ja: 'ID選択',               en: '#id',                 hint: '#i○' },
       { ja: 'ホバー時',             en: ':hover',              hint: ':ho○○○' },
       { ja: 'フォーカス時',         en: ':focus',              hint: ':fo○○○' },
       { ja: '最初の子要素',         en: ':first-child',        hint: ':first-○○○○○' },
       { ja: '最後の子要素',         en: ':last-child',         hint: ':last-○○○○○' },
-    //   { ja: '直下の子',             en: '',             hint: '○' },
-    //   { ja: '直後の兄弟',           en: '+',                   hint: '○' },
-    //   { ja: '以降の兄弟',           en: '~',                   hint: '○' },
-    //   { ja: '属性選択',             en: '[attr]',              hint: '[at○○]' },
-    //   { ja: 'ルート要素',           en: ':root',               hint: ':ro○○' },
       { ja: '疑似要素・前',         en: '::before',            hint: '::be○○○○' },
       { ja: '疑似要素・後',         en: '::after',             hint: '::af○○○' },
-    //   { ja: '否定',                 en: ':not()',              hint: ':no○()' },
-    //   { ja: 'N番目の子',            en: ':nth-child()',        hint: ':nth-○○○○○()' },
-    //   { ja: 'メディアクエリ',       en: '@media',              hint: '@me○○○' },
-    //   { ja: 'キーフレーム定義',     en: '@keyframes',          hint: '@key○○○○○○' },
-    //   { ja: '複数まとめて選択',     en: ':is()',               hint: ':i○()' },
-    //   { ja: 'CSS変数定義',          en: '@layer',              hint: '@la○○○' },
-    //   { ja: '全称選択',             en: '*',                   hint: '○' },
+      //   { ja: 'クラス選択',           en: '.class',              hint: '.cl○○○' },
+      //   { ja: 'ID選択',               en: '#id',                 hint: '#i○' },
+      //   { ja: '直下の子',             en: '',             hint: '○' },
+      //   { ja: '直後の兄弟',           en: '+',                   hint: '○' },
+      //   { ja: '以降の兄弟',           en: '~',                   hint: '○' },
+      //   { ja: '属性選択',             en: '[attr]',              hint: '[at○○]' },
+      //   { ja: 'ルート要素',           en: ':root',               hint: ':ro○○' },
+      //   { ja: '否定',                 en: ':not()',              hint: ':no○()' },
+      //   { ja: 'N番目の子',            en: ':nth-child()',        hint: ':nth-○○○○○()' },
+      //   { ja: 'メディアクエリ',       en: '@media',              hint: '@me○○○' },
+      //   { ja: 'キーフレーム定義',     en: '@keyframes',          hint: '@key○○○○○○' },
+      //   { ja: '複数まとめて選択',     en: ':is()',               hint: ':i○()' },
+      //   { ja: 'CSS変数定義',          en: '@layer',              hint: '@la○○○' },
+      //   { ja: '全称選択',             en: '*',                   hint: '○' },
     ]
   },
   'html': {
     label: 'HTMLタグ※<>は省略する',
     items: [
-    //   { ja: 'HTML宣言',             en: '!DOCTYPE html', hint: '<!DOC○○○○ html>' },
       { ja: 'ページ全体',           en: 'html',          hint: '<ht○○>' },
       { ja: 'メタ情報エリア',       en: 'head',          hint: '<he○○>' },
-    //   { ja: '文字コード指定',       en: 'meta charset',  hint: '<meta ch○○○○○>' },
       { ja: 'CSS読み込み',          en: 'link',          hint: '<li○○>' },
       { ja: 'ページ本文',           en: 'body',          hint: '<bo○○>' },
       { ja: 'ヘッダー',             en: 'header',        hint: '<hea○○○>' },
@@ -779,6 +1047,8 @@ export const BANKS = {
       { ja: '汎用インライン',       en: 'span',          hint: '<sp○○>' },
       { ja: 'テーブル',             en: 'table',         hint: '<tab○○>' },
       { ja: 'フォーム',             en: 'form',          hint: '<fo○○>' },
+      //   { ja: 'HTML宣言',             en: '!DOCTYPE html', hint: '<!DOC○○○○ html>' },
+      //   { ja: '文字コード指定',       en: 'meta charset',  hint: '<meta ch○○○○○>' },
     ]
   },
   'css-val': {
@@ -791,27 +1061,26 @@ export const BANKS = {
       { ja: '親から引き継ぐ',       en: 'inherit',             hint: 'in○○○○○' },
       { ja: '絶対配置',             en: 'absolute',            hint: 'abs○○○○○○' },
       { ja: '相対配置',             en: 'relative',            hint: 'rel○○○○○○' },
-    //   { ja: '半透明の黒',           en: 'rgba(0,0,0,0.5)',     hint: 'rgba(○,○,○,○.○)' },
-    //   { ja: '計算式',               en: 'calc()',              hint: 'cal○()' },
-    //   { ja: 'CSS変数参照',          en: 'var()',               hint: 'va○()' },
-    //   { ja: '線形グラデーション',   en: 'linear-gradient()',   hint: 'linear-○○○○○○○○○()' },
       { ja: 'なし',                 en: 'none',                hint: 'no○○' },
       { ja: '自動',                 en: 'auto',                hint: 'au○○' },
-    //   { ja: '優先度最大',           en: '!important',          hint: '!im○○○○○○○' },
       { ja: 'コンテンツ幅に合わせる', en: 'max-content',       hint: 'max-○○○○○○○' },
       { ja: 'ビューポート幅',       en: 'vw',                  hint: 'v○' },
       { ja: 'ビューポート高さ',     en: 'vh',                  hint: 'v○' },
       { ja: 'フォントサイズ基準',   en: 'em',                  hint: '○○' },
       { ja: 'ルートフォント基準',   en: 'rem',                 hint: 'r○○' },
       { ja: 'グリッド均等割',       en: 'fr',                  hint: '○○' },
+      //   { ja: '半透明の黒',           en: 'rgba(0,0,0,0.5)',     hint: 'rgba(○,○,○,○.○)' },
+      //   { ja: '計算式',               en: 'calc()',              hint: 'cal○()' },
+      //   { ja: 'CSS変数参照',          en: 'var()',               hint: 'va○()' },
+      //   { ja: '線形グラデーション',   en: 'linear-gradient()',   hint: 'linear-○○○○○○○○○()' },
+      //   { ja: '優先度最大',           en: '!important',          hint: '!im○○○○○○○' },
     ]
   },
 
   'test': {
     label: '試用',
     items: [
-      {
-        ja: 'モニター',
+      { ja: 'モニター',
         en: 'monitor',
         hint: 'm○○○○○r',
         exp: {
