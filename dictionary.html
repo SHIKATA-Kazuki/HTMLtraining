@@ -28,7 +28,7 @@ body {
   min-height: 100vh;
 }
 
-/* ── Top bar (matches main app) ── */
+/* ── Top bar ── */
 .topbar {
   width: 100%;
   padding: 18px 32px;
@@ -93,27 +93,6 @@ body {
   line-height: 1.8;
   max-width: 60ch;
 }
-
-/* ── Search ── */
-.search-wrap {
-  max-width: 880px;
-  margin: 0 auto;
-  padding: 0 24px 8px;
-}
-.search-box {
-  width: 100%;
-  padding: 13px 18px;
-  border: 1.5px solid var(--border);
-  border-radius: 12px;
-  background: var(--paper);
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 14px;
-  color: var(--text);
-  outline: none;
-  transition: border-color 0.15s, box-shadow 0.15s;
-}
-.search-box:focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(67,97,238,0.1); }
-.search-box::placeholder { color: var(--muted); font-family: 'Noto Sans JP', sans-serif; }
 
 /* ── Layout: TOC + content ── */
 .layout {
@@ -180,23 +159,22 @@ body {
   color: var(--muted);
 }
 
-/* ── Word entry (dictionary style) ── */
+/* ── Word entry (dictionary style, always expanded) ── */
 .entry {
   border: 1.5px solid var(--border);
   border-radius: 14px;
   background: var(--paper);
   margin-bottom: 14px;
   overflow: hidden;
-  transition: border-color 0.15s;
 }
-.entry:hover { border-color: rgba(67,97,238,0.35); }
-.entry.has-detail { cursor: pointer; }
 
 .entry-head {
   display: flex;
   align-items: center;
   gap: 14px;
   padding: 14px 18px;
+  border-bottom: 1px solid var(--border);
+  background: rgba(67,97,238,0.025);
 }
 .entry-word {
   font-family: 'JetBrains Mono', monospace;
@@ -210,32 +188,11 @@ body {
   color: var(--muted);
   flex: 1;
 }
-.entry-toggle {
-  font-size: 11px;
-  color: var(--border);
-  transition: transform 0.2s;
-  flex-shrink: 0;
-}
-.entry.open .entry-toggle { transform: rotate(180deg); color: var(--blue); }
-.entry-badge {
-  font-size: 10px;
-  font-weight: 700;
-  padding: 2px 8px;
-  border-radius: 99px;
-  background: rgba(6,214,160,0.12);
-  color: #059c74;
-  flex-shrink: 0;
-  white-space: nowrap;
-}
 
-/* ── Detail (expandable) ── */
+/* ── Detail (always visible) ── */
 .entry-detail {
-  display: none;
-  padding: 0 18px 18px;
-  border-top: 1px solid var(--border);
-  margin-top: 0;
+  padding: 16px 18px;
 }
-.entry.open .entry-detail { display: block; padding-top: 16px; }
 
 .detail-block { margin-bottom: 14px; }
 .detail-block:last-child { margin-bottom: 0; }
@@ -303,16 +260,6 @@ body {
   line-height: 1.7;
 }
 
-/* ── Empty state ── */
-.no-results {
-  text-align: center;
-  padding: 60px 20px;
-  color: var(--muted);
-  font-size: 14px;
-  display: none;
-}
-.no-results.show { display: block; }
-
 /* ── Footer ── */
 footer {
   text-align: center;
@@ -326,20 +273,15 @@ footer {
 
 <!-- Top bar -->
 <div class="topbar">
-  <a class="site-title" href="HTML-training.html">CSS/HTML <span>英単語タイピング</span></a>
-  <a class="back-link" href="HTML-training.html">← 練習に戻る</a>
+  <a class="site-title" href="index.html">CSS/HTML <span>英単語タイピング</span></a>
+  <a class="back-link" href="index.html">← 練習に戻る</a>
 </div>
 
 <!-- Hero -->
 <div class="hero">
   <div class="hero-eyebrow">Glossary / 単語帳</div>
   <h1>すべての出題語の<br>意味と成り立ちを読む</h1>
-  <p>タイピング練習に出てくる英単語を、語源・CSS/HTMLでの使われ方・覚え方つきでまとめました。気になる単語をクリックすると詳しい解説が開きます。</p>
-</div>
-
-<!-- Search -->
-<div class="search-wrap">
-  <input type="text" class="search-box" id="searchBox" placeholder="🔍 単語・日本語で検索（例: background, 背景）">
+  <p>タイピング練習に出てくる英単語を、語源・CSS/HTMLでの使われ方・覚え方つきで一覧にまとめました。カテゴリごとに上から順に読んでいくだけで、出題範囲をすべて確認できます。</p>
 </div>
 
 <!-- Layout -->
@@ -351,7 +293,6 @@ footer {
 
   <div class="content" id="content">
     <!-- generated -->
-    <div class="no-results" id="noResults">該当する単語が見つかりませんでした。</div>
   </div>
 </div>
 
@@ -362,8 +303,6 @@ import { BANKS } from './js/bank.js';
 
 const toc     = document.getElementById('toc');
 const content = document.getElementById('content');
-const noResults = document.getElementById('noResults');
-const searchBox  = document.getElementById('searchBox');
 
 const COLORS = ['m-blue','m-green','m-red','m-yellow','m-purple'];
 
@@ -378,7 +317,7 @@ Object.entries(BANKS).forEach(([key, bank]) => {
   toc.appendChild(a);
 });
 
-// ── 本文生成 ──────────────────────────────────────────────────────────────
+// ── 本文生成（すべて常時展開）────────────────────────────────────────────
 Object.entries(BANKS).forEach(([key, bank]) => {
   const section = document.createElement('section');
   section.className = 'cat-section';
@@ -393,35 +332,26 @@ Object.entries(BANKS).forEach(([key, bank]) => {
 
   bank.items.forEach(item => {
     const entry = document.createElement('div');
-    const hasDetail = item.exp && typeof item.exp === 'object';
-    entry.className = 'entry' + (hasDetail ? ' has-detail' : '');
-    entry.dataset.search = (item.en + ' ' + item.ja).toLowerCase();
+    entry.className = 'entry';
 
     const head = document.createElement('div');
     head.className = 'entry-head';
     head.innerHTML = `
       <span class="entry-word">${escapeHtml(item.en)}</span>
       <span class="entry-ja">${escapeHtml(item.ja)}</span>
-      ${hasDetail ? '<span class="entry-badge">詳しい解説</span>' : ''}
-      ${hasDetail ? '<span class="entry-toggle">▾</span>' : ''}
     `;
     entry.appendChild(head);
 
-    if (hasDetail) {
-      const detail = document.createElement('div');
-      detail.className = 'entry-detail';
+    const detail = document.createElement('div');
+    detail.className = 'entry-detail';
+    if (item.exp && typeof item.exp === 'object') {
       detail.innerHTML = buildDetailHtml(item.exp);
-      entry.appendChild(detail);
-
-      head.addEventListener('click', () => entry.classList.toggle('open'));
     } else if (item.hint) {
-      const detail = document.createElement('div');
-      detail.className = 'entry-detail';
       detail.innerHTML = `<div class="hint-only">${escapeHtml(item.hint)}</div>`;
-      entry.appendChild(detail);
-      entry.classList.add('has-detail');
-      head.addEventListener('click', () => entry.classList.toggle('open'));
+    } else {
+      detail.innerHTML = `<div class="hint-only">（解説なし）</div>`;
     }
+    entry.appendChild(detail);
 
     section.appendChild(entry);
   });
@@ -478,25 +408,6 @@ function escapeHtml(str) {
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;');
 }
-
-// ── 検索フィルタ ──────────────────────────────────────────────────────────
-searchBox.addEventListener('input', () => {
-  const q = searchBox.value.trim().toLowerCase();
-  let anyVisible = false;
-
-  document.querySelectorAll('.cat-section').forEach(section => {
-    let sectionHasMatch = false;
-    section.querySelectorAll('.entry').forEach(entry => {
-      const match = !q || entry.dataset.search.includes(q);
-      entry.style.display = match ? '' : 'none';
-      if (match) sectionHasMatch = true;
-    });
-    section.style.display = sectionHasMatch ? '' : 'none';
-    if (sectionHasMatch) anyVisible = true;
-  });
-
-  noResults.classList.toggle('show', !anyVisible);
-});
 </script>
 </body>
 </html>
